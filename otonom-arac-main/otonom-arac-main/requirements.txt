@@ -1,0 +1,18 @@
+# Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+ultralytics>=8.0.0
+
+# Computer Vision
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Hardware Control
+gpiozero>=1.6.2
+picamera2>=0.3.12
+
+# Web Framework
+Flask>=2.3.0
+
+# Data Processing
+pandas>=2.0.0
