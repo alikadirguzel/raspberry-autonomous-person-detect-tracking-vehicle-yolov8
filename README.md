@@ -1,192 +1,163 @@
-# Otonom Araç - Kişi Takip Sistemi
+# Autonomous Vehicle - Person Tracking System
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-5-red.svg)](https://www.raspberrypi.org/)
 
-Raspberry Pi üzerinde çalışan, YOLOv8 ile gerçek zamanlı kişi tespiti ve P-kontrol algoritması ile otonom takip yapan araç projesi.
+An autonomous vehicle project running on Raspberry Pi that performs real-time person detection using YOLOv8 and autonomous tracking using a P-control algorithm.
 
-## 🚀 Özellikler
+## 🚀 Features
 
-- **Gerçek Zamanlı Nesne Tespiti**: YOLOv8 modeli ile yüksek doğrulukta kişi tespiti
-- **Kalman Filtresi**: Hedef takibinde tahmin ve düzeltme için Kalman filtresi
-- **P-Kontrol Algoritması**: Hassas motor kontrolü için oransal kontrol
-- **Web Arayüzü**: Flask ile gerçek zamanlı video yayını
-- **Arama Modu**: Hedef kaybolduğunda otomatik arama algoritması
-- **Veri Loglama**: CSV formatında takip verilerinin kaydedilmesi
+- **Real-Time Object Detection**: High-accuracy person detection with the YOLOv8 model.
+- **Kalman Filter**: Kalman filter implementation for prediction and correction in target tracking.
+- **P-Control Algorithm**: Proportional control for precise motor steering.
+- **Web Interface**: Real-time video streaming via Flask.
+- **Search Mode**: Automatic search algorithm initiates when the target is lost.
+- **Data Logging**: Recording tracking data in CSV format.
 
-## 📋 Gereksinimler
+## 📋 Requirements
 
-
-### Yazılım
+### Software
 - Python 3.8+
-- Raspberry Pi OS (Bullseye veya üzeri)
+- Raspberry Pi OS (Bullseye or later)
 
-## 🔧 Kurulum
+## 🔧 Installation
 
-### 1. Repository'yi Klonlayın
-
-```bash
-git clone https://github.com/kullanici-adi/otonom-arac.git
-cd otonom-arac
-```
-
-### 2. Sanal Ortam Oluşturun (Önerilen)
+### 1. Clone the Repository
 
 ```bash
+git clone [https://github.com/your-username/autonomous-vehicle.git](https://github.com/your-username/autonomous-vehicle.git)
+cd autonomous-vehicle
+2. Create a Virtual Environment (Recommended)
+Bash
+
 python3 -m venv venv
 source venv/bin/activate  # Linux/Mac
-# veya
+# or
 venv\Scripts\activate  # Windows
-```
+3. Install Dependencies
+Bash
 
-### 3. Bağımlılıkları Yükleyin
-
-```bash
 pip install -r requirements.txt
-```
+4. Download the YOLOv8 Model
+Place the YOLOv8 model file (yolov8n.pt) in the project directory or update the YOLO_MODEL_PATH variable in config.py.
 
-### 4. YOLOv8 Modelini İndirin
+Bash
 
-YOLOv8 model dosyasını (`yolov8n.pt`) proje dizinine yerleştirin veya `config.py` dosyasındaki `YOLO_MODEL_PATH` değişkenini güncelleyin.
+# The model can be downloaded automatically on the first run
+# or manually:
+wget [https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt](https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt)
+5. Check GPIO Pin Connections
+Edit the motor pin settings in src/config.py according to your Raspberry Pi connections:
 
-```bash
-# Model otomatik olarak ilk çalıştırmada indirilebilir
-# veya manuel olarak:
-wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt
-```
+Python
 
-### 5. GPIO Pin Bağlantılarını Kontrol Edin
-
-`src/config.py` dosyasında motor pin ayarlarını Raspberry Pi bağlantılarınıza göre düzenleyin:
-
-```python
-MOTOR_IN1 = 22  # Motor A - İleri
-MOTOR_IN2 = 23  # Motor A - Geri
+MOTOR_IN1 = 22  # Motor A - Forward
+MOTOR_IN2 = 23  # Motor A - Backward
 MOTOR_ENA = 12  # Motor A - PWM
-MOTOR_IN3 = 27  # Motor B - İleri
-MOTOR_IN4 = 24  # Motor B - Geri
+MOTOR_IN3 = 27  # Motor B - Forward
+MOTOR_IN4 = 24  # Motor B - Backward
 MOTOR_ENB = 13  # Motor B - PWM
-```
+🎮 Usage
+Starting the Program
+Bash
 
-## 🎮 Kullanım
-
-### Programı Başlatma
-
-```bash
 cd src
 python3 main.py
-```
+Accessing the Web Interface
+Once the program is running, you can watch the live video stream from any device on the same network by visiting:
 
-### Web Arayüzüne Erişim
-
-Program çalıştıktan sonra, aynı ağdaki herhangi bir cihazdan şu adrese giderek canlı video yayınını izleyebilirsiniz:
-
-```
 http://<Raspberry_Pi_IP>:5000
-```
+Example: http://192.168.1.100:5000
 
-Örnek: `http://192.168.1.100:5000`
+Stopping the Program
+You can safely stop the program by pressing Ctrl+C.
 
-### Programı Durdurma
+⚙️ Configuration
+You can adjust system parameters from the src/config.py file:
 
-`Ctrl+C` tuşlarına basarak programı güvenli bir şekilde durdurabilirsiniz.
+Python
 
-## ⚙️ Yapılandırma
+# Control Parameters
+BASE_SPEED = 1.0              # Base speed (0.0 - 1.0)
+Kp = 0.100                    # P-Control gain
+DEADZONE = 20                 # Center tolerance (pixels)
+SCAN_SPEED = 0.9              # Search mode speed
+TOTAL_SEARCH_TIMEOUT = 30.0   # Search timeout (seconds)
 
-`src/config.py` dosyasından sistem parametrelerini ayarlayabilirsiniz:
-
-```python
-# Kontrol Parametreleri
-BASE_SPEED = 1.0              # Temel hız (0.0 - 1.0)
-Kp = 0.100                    # P-Kontrol kazancı
-DEADZONE = 20                 # Merkez toleransı (piksel)
-SCAN_SPEED = 0.9              # Arama modu hızı
-TOTAL_SEARCH_TIMEOUT = 30.0   # Arama zaman aşımı (saniye)
-
-# Sistem Ayarları
+# System Settings
 FRAME_WIDTH = 640
 FRAME_HEIGHT = 480
-DEVICE = 'cuda'  # veya 'cpu'
-```
-
-## 📁 Proje Yapısı
-
-```
-otonom-arac/
+DEVICE = 'cuda'  # or 'cpu'
+📁 Project Structure
+autonomous-vehicle/
 ├── src/
-│   ├── main.py           # Ana program döngüsü
-│   ├── config.py         # Yapılandırma parametreleri
-│   ├── detector.py       # YOLOv8 tespit thread'i
-│   ├── motor_control.py  # Motor kontrol sınıfı
-│   ├── logger.py         # Kalman filtresi ve loglama
-│   └── web_server.py     # Flask web sunucusu
-├── requirements.txt      # Python bağımlılıkları
-├── README.md            # Bu dosya
-├── LICENSE              # Lisans bilgisi
-└── .gitignore          # Git ignore dosyası
-```
+│   ├── main.py           # Main program loop
+│   ├── config.py         # Configuration parameters
+│   ├── detector.py       # YOLOv8 detection thread
+│   ├── motor_control.py  # Motor control class
+│   ├── logger.py         # Kalman filter and logging
+│   └── web_server.py     # Flask web server
+├── requirements.txt      # Python dependencies
+├── README.md             # This file
+├── LICENSE               # License information
+└── .gitignore            # Git ignore file
+🔬 Algorithm Description
+P-Control (Proportional Control)
+The system adjusts motor speeds based on the target's deviation from the screen center:
 
-## 🔬 Algoritma Açıklaması
+error = target_x - center_x
+correction = Kp * error
+motor_a_speed = BASE_SPEED + correction
+motor_b_speed = BASE_SPEED - correction
+Kalman Filter
+Used to predict the target's position and correct noisy measurements, providing a smooth tracking path.
 
-### P-Kontrol (Proportional Control)
+Search Mode
+When the target is lost, the vehicle performs a spot turn based on the last known direction to actively search for the target.
 
-Sistem, hedefin ekran merkezinden sapmasına göre motor hızlarını ayarlar:
+🐛 Troubleshooting
+Camera Not Found
+Check the camera connection.
 
-```
-hata = hedef_x - merkez_x
-düzeltme = Kp × hata
-motor_a_hız = BASE_SPEED + düzeltme
-motor_b_hız = BASE_SPEED - düzeltme
-```
+Ensure the picamera2 library is installed.
 
-### Kalman Filtresi
+If using a USB camera, update the camera settings in config.py.
 
-Hedefin pozisyonunu tahmin etmek ve gürültülü ölçümleri düzeltmek için kullanılır.
+Model Cannot Be Loaded
+Check your internet connection (for the initial download).
 
-### Arama Modu
+Verify the model file path in config.py.
 
-Hedef kaybolduğunda, son bilinen yöne göre yerinde dönüş yaparak hedefi arar.
+Motors Not Working
+Check the GPIO pin connections.
 
-## 🐛 Sorun Giderme
+Ensure the power supply is sufficient.
 
-### Kamera Bulunamıyor
-- Kamera bağlantısını kontrol edin
-- `picamera2` kütüphanesinin yüklü olduğundan emin olun
-- USB kamera kullanıyorsanız, `config.py`'de kamera ayarlarını güncelleyin
+Ensure the gpiozero library is installed.
 
-### Model Yüklenemiyor
-- İnternet bağlantınızı kontrol edin (ilk indirme için)
-- Model dosyasının yolunu `config.py`'de kontrol edin
+📝 License
+This project is licensed under the MIT License. See the LICENSE file for details.
 
-### Motorlar Çalışmıyor
-- GPIO pin bağlantılarını kontrol edin
-- Güç kaynağının yeterli olduğundan emin olun
-- `gpiozero` kütüphanesinin yüklü olduğundan emin olun
+👥 Contributing
+Contributions are welcome! Please open an issue or submit a pull request first.
 
-## 📝 Lisans
+Fork the Project
 
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+Create your Feature Branch (git checkout -b feature/AmazingFeature)
 
-## 👥 Katkıda Bulunma
+Commit your Changes (git commit -m 'Add some AmazingFeature')
 
-Katkılarınızı bekliyoruz! Lütfen önce bir issue açın veya pull request gönderin.
+Push to the Branch (git push origin feature/AmazingFeature)
 
-1. Fork edin
-2. Feature branch oluşturun (`git checkout -b feature/AmazingFeature`)
-3. Commit edin (`git commit -m 'Add some AmazingFeature'`)
-4. Push edin (`git push origin feature/AmazingFeature`)
-5. Pull Request açın
+Open a Pull Request
 
-## 📧 İletişim
+📧 Contact
+For questions or suggestions, please open an issue.
 
-Sorularınız veya önerileriniz için issue açabilirsiniz.
+🙏 Acknowledgements
+Ultralytics - YOLOv8
 
-## 🙏 Teşekkürler
+OpenCV - Computer Vision
 
-- [Ultralytics](https://github.com/ultralytics/ultralytics) - YOLOv8
-- [OpenCV](https://opencv.org/) - Görüntü işleme
-- [Flask](https://flask.palletsprojects.com/) - Web framework
-
-
-
+Flask - Web Framework
