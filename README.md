@@ -27,7 +27,7 @@ Raspberry Pi üzerinde çalışan, YOLOv8 ile gerçek zamanlı kişi tespiti ve 
 ### 1. Repository'yi Klonlayın
 
 ```bash
-git clone https://github.com/alikadirguzel/otonom-arac.git
+git clone https://github.com/kullanici-adi/otonom-arac.git
 cd otonom-arac
 ```
 
@@ -187,5 +187,6 @@ Sorularınız veya önerileriniz için issue açabilirsiniz.
 - [Ultralytics](https://github.com/ultralytics/ultralytics) - YOLOv8
 - [OpenCV](https://opencv.org/) - Görüntü işleme
 - [Flask](https://flask.palletsprojects.com/) - Web framework
+
 
 
