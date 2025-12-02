@@ -2,7 +2,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-4B-red.svg)](https://www.raspberrypi.org/)
+[![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-5-red.svg)](https://www.raspberrypi.org/)
 
 Raspberry Pi üzerinde çalışan, YOLOv8 ile gerçek zamanlı kişi tespiti ve P-kontrol algoritması ile otonom takip yapan araç projesi.
 
@@ -187,4 +187,5 @@ Sorularınız veya önerileriniz için issue açabilirsiniz.
 - [Ultralytics](https://github.com/ultralytics/ultralytics) - YOLOv8
 - [OpenCV](https://opencv.org/) - Görüntü işleme
 - [Flask](https://flask.palletsprojects.com/) - Web framework
+
 
